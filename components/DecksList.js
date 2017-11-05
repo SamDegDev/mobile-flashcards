@@ -7,6 +7,7 @@ export default class DecksList extends Component {
 
   data = [
     {
+      id: '1',
       title: 'React',
       questions: [
         {
@@ -20,6 +21,7 @@ export default class DecksList extends Component {
       ]
     },
     {
+      id: '2',
       title: 'JavaScript',
       questions: [
         {
@@ -31,7 +33,11 @@ export default class DecksList extends Component {
   ];
 
   renderItem = ({ item }) => {
-    return <DeckItem {...item} />
+    return <DeckItem {...item} showDeck={this.showDeck} />
+  }
+
+  showDeck = (deckId) => {
+    // shows the cards for a specific deck
   }
 
   render() {

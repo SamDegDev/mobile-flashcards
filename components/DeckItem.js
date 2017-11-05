@@ -1,15 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { white, black, gray } from '../utils/colors';
 
-export default function DeckItem({ title, questions }) {
+export default function DeckItem({ id, title, questions, showDeck }) {
   const total = questions.length;
 
+  // when this item gets pressed
+  onPress = function() {
+    // shows the cards for this deck
+    showDeck(id);
+  }
+
   return (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subtitle}>{total} card{total == 1 ? 's' : ''}</Text>
-    </View>
+    <TouchableWithoutFeedback onPress={this.onPress}>
+      <View style={styles.item}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.subtitle}>{total} card{total == 1 ? 's' : ''}</Text>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

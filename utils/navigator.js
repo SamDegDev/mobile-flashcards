@@ -8,7 +8,7 @@ const Tabs = TabNavigator({
   DecksList: {
     screen: DecksList,
     navigationOptions: {
-      tabBarLabel: 'Deck',
+      tabBarLabel: 'Decks',
       tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='cards' size={30} color={tintColor} />
     }
   },
@@ -33,8 +33,16 @@ const Tabs = TabNavigator({
   }
 });
 
-export const MainNavigator = StackNavigator({
-  Home: {
-    screen: Tabs,
-  },
-});
+export const MainNavigator = StackNavigator(
+  {
+    Home: {
+      screen: Tabs,
+      navigationOptions: {
+        headerTintColor: black,
+        headerStyle: {
+          backgroundColor: white,
+        }
+      }
+    },
+  }
+);

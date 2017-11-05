@@ -1,21 +1,15 @@
 import React from 'react';
-import { View, StatusBar } from 'react-native';
-import { Constants } from 'expo';
-import { blue } from './utils/colors';
-
-function FlashStatusBar({ backgroundColor, ...props }) {
-  return (
-    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
-      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
-    </View>
-  )
-}
+import { View } from 'react-native';
+import { white, black } from './utils/colors';
+import { FlashStatusBar } from './utils/statusbar';
+import { MainNavigator } from './utils/navigator';
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <FlashStatusBar backgroundColor={blue} barStyle='light-content' />
+        <FlashStatusBar backgroundColor={white} barStyle='light-content' />
+        <MainNavigator />
       </View>
     );
   }

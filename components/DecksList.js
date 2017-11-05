@@ -36,7 +36,7 @@ export default class DecksList extends Component {
 
   render() {
     return(
-      <View>
+      <View style={{ flex: 1 }}>
         <FlatList
           data={this.data}
           renderItem={this.renderItem}

@@ -2,6 +2,7 @@ import React from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DecksList from '../components/DecksList';
+import DeckView from '../components/DeckView';
 import { white, black } from './colors';
 
 const Tabs = TabNavigator({
@@ -37,11 +38,16 @@ export const MainNavigator = StackNavigator(
   {
     Home: {
       screen: Tabs,
-      navigationOptions: {
-        headerTintColor: black,
-        headerStyle: {
-          backgroundColor: white,
-        }
+    },
+    DeckView: {
+      screen: DeckView,
+    },
+  },
+  {
+    navigationOptions: {
+      headerTintColor: black,
+      headerStyle: {
+        backgroundColor: white,
       }
     },
   }

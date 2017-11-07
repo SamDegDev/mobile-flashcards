@@ -2,35 +2,23 @@ import React, { Component } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { AppLoading } from 'expo';
 import DeckItem from './DeckItem';
+import { connect } from 'react-redux';
+import { fetchDecks, addDeck } from '../utils/FlashcardsAPI';
+import { receiveDecks } from '../actions';
 
-export default class DecksList extends Component {
+class DecksList extends Component {
+  state = {
+    ready: false,
+  }
 
-  data = [
-    {
-      id: '1',
-      title: 'React',
-      questions: [
-        {
-          question: 'What is React?',
-          answer: 'A library for managing user interfaces'
-        },
-        {
-          question: 'Where do you make Ajax requests in React?',
-          answer: 'The componentDidMount lifecycle event'
-        }
-      ]
-    },
-    {
-      id: '2',
-      title: 'JavaScript',
-      questions: [
-        {
-          question: 'What is a closure?',
-          answer: 'The combination of a function and the lexical environment within which that function was declared.'
-        }
-      ]
-    }
-  ];
+  componentDidMount() {
+    const { dispatch } = this.props;
+
+    // gets all the available decks
+    fetchDecks()
+    .then(decks => dispatch(receiveDecks(decks)))
+    .then(() => this.setState({ ready: true }))
+  }
 
   renderItem = ({ item }) => {
     return <DeckItem {...item} showDeck={this.showDeck} />
@@ -38,13 +26,24 @@ export default class DecksList extends Component {
 
   showDeck = (deckId) => {
     // shows the cards for a specific deck
+    this.props.navigation.navigate(
+      'DeckView',
+      { deckId }
+    );
   }
 
   render() {
+    const { decks } = this.props;
+    const { ready } = this.state;
+
+    if (ready === false) {
+      return <AppLoading />
+    }
+
     return(
       <View style={{ flex: 1 }}>
         <FlatList
-          data={this.data}
+          data={Object.values(decks)}
           renderItem={this.renderItem}
           keyExtractor={item => item.title}
         />
@@ -53,3 +52,11 @@ export default class DecksList extends Component {
   }
 
 }
+
+function mapStateToProps(decks) {
+  return {
+    decks
+  }
+}
+
+export default connect(mapStateToProps)(DecksList);

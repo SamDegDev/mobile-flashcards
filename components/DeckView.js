@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { AppLoading } from 'expo';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
+import { black, gray, white, green } from '../utils/colors';
 
 class DeckView extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -27,19 +28,47 @@ class DeckView extends Component {
 
     return(
       <View style={{ flex: 1 }}>
-        <Text>{deck.title}</Text>
-        <Text>{total} card{total == 1 ? '' : 's'}</Text>
-        <TextButton style={{ padding: 10 }} onPress={this.addCard}>
-          Add Card
+        <View style={styles.container}>
+          <Text style={styles.title}>{deck.title}</Text>
+          <Text style={styles.subtitle}>{total} card{total == 1 ? '' : 's'}</Text>
+        </View>
+        <TextButton onPress={this.addCard}>
+          {'Add Card'.toUpperCase()}
         </TextButton>
-        <TextButton style={{ padding: 10 }} onPress={this.startQuiz}>
-          Start Quiz
+        <TextButton backgroundColor={green} onPress={this.startQuiz}>
+          {'Start Quiz'.toUpperCase()}
         </TextButton>
       </View>
     );
   }
 
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: white,
+    paddingTop: 20,
+    paddingRight: 10,
+    paddingBottom: 20,
+    paddingLeft: 10,
+    marginTop: 10,
+    marginRight: 10,
+    marginBottom: 10,
+    marginLeft: 10,
+    borderRadius: 2,
+  },
+  title: {
+    fontSize: 35,
+    color: black,
+    marginBottom: 5,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 20,
+    color: gray,
+    textAlign: 'center',
+  }
+});
 
 function mapStateToProps(state, { navigation }) {
   const { deckId } = navigation.state.params;

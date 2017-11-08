@@ -1,20 +1,28 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { blue } from '../utils/colors';
+import { white, blue } from '../utils/colors';
 
-export default function TextButton({ children, onPress, style = {} }) {
+export default function TextButton({ children, onPress, backgroundColor = blue, color = white, style = {} }) {
   return (
     <TouchableOpacity
+      style={[styles.button, { backgroundColor }]}
       onPress={onPress}
     >
-      <Text style={[styles.reset, style]}>{children}</Text>
+      <Text style={[{ color }, styles.text, style]}>{children}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  reset: {
+  button: {
+    borderRadius: 4,
+    margin: 10,
+    padding: 10,
+
+  },
+  text: {
+    fontSize: 14,
     textAlign: 'center',
-    color: blue,
-  }
-})
+    fontWeight: 'bold',
+  },
+});

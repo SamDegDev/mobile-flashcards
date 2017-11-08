@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: white,
     paddingTop: 10,
+    paddingRight: 20,
     paddingBottom: 10,
     paddingLeft: 20,
-    paddingRight: 20,
     marginTop: 10,
     marginLeft: 10,
     marginRight: 10,

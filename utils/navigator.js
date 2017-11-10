@@ -3,6 +3,7 @@ import { TabNavigator, StackNavigator } from 'react-navigation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import DecksList from '../components/DecksList';
 import DeckView from '../components/DeckView';
+import AddCard from '../components/AddCard';
 import { white, black } from './colors';
 
 const Tabs = TabNavigator({
@@ -41,6 +42,9 @@ export const MainNavigator = StackNavigator(
     },
     DeckView: {
       screen: DeckView,
+    },
+    AddCard: {
+      screen: AddCard,
     },
   },
   {

@@ -4,6 +4,7 @@ import { AppLoading } from 'expo';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 import { black, gray, white, green } from '../utils/colors';
+import AddCard from './AddCard';
 
 class DeckView extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -16,6 +17,11 @@ class DeckView extends Component {
 
   addCard = () => {
     // add a card to this deck
+    const { deckId } = this.props.navigation.state.params;
+    this.props.navigation.navigate(
+      'AddCard',
+      { deckId }
+    )
   }
 
   startQuiz = () => {

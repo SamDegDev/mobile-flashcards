@@ -1,46 +1,89 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView } from 'react-native';
 import TextButton from './TextButton';
-import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { white, blue, black, lightGray } from '../utils/colors';
+import { white, blue, black, lightGray, red } from '../utils/colors';
+//
+import { updateDeck } from '../utils/FlashcardsAPI';
+import { addCardToDeck } from '../actions';
+import { connect } from 'react-redux';
 
 class AddCard extends Component {
   static navigationOptions = ({ navigation }) => {
-    //const { deckId } = navigation.state.params;
-    const deckId = 'React';
+    const { deckId } = navigation.state.params;
 
     return {
-      title: 'New Card'
+      title: 'Add Card'
     }
   }
 
   state = {
     questionInput: '',
+    questionInputError: '',
     answerInput: '',
+    answerInputError: '',
   }
 
   handleQuestionChange = questionInput => {
     this.setState(() => ({
-      questionInput
+      questionInput: questionInput
     }))
   }
 
   handleAnswerChange = answerInput => {
     this.setState(() => ({
-      answerInput
+      answerInput: answerInput
     }))
   }
 
   handleSubmitCard = () => {
     // validates the fields
-    // saves the card
+    if (this.validateQuestionInput()
+      && this.validateAnswerInput())
+    {
+      const { deckId } = this.props.navigation.state.params;
+      let deck = this.props.deck;
+      deck.questions.push({
+        question: this.state.questionInput,
+        answer: this.state.answerInput,
+      })
+      // saves the card
+      updateDeck(deckId, deck);
+      // returns to deck view
+      this.props.goBack();
+    }
+
+  }
+
+  validateQuestionInput = () => {
+    if (this.state.questionInput.trim() === '') {
+      this.setState(() => ({
+        questionInputError: 'Please insert a Question!'
+      }));
+      return false;
+    }
+    this.setState(() => ({
+      questionInputError: ''
+    }));
+    return true;
+  }
+
+  validateAnswerInput = () => {
+    if (this.state.answerInput.trim() === '') {
+      this.setState(() => ({
+        answerInputError: 'Please insert an Answer!'
+      }));
+      return false;
+    }
+    this.setState(() => ({
+      answerInputError: ''
+    }));
+    return true;
   }
 
   render() {
-    //const { deckId } = navigation.state.params;
-    const deckId = 'React';
-    const { questionInput, answerInput } = this.state;
+    const { deckId } = this.props.navigation.state.params;
+    const { questionInput, questionInputError, answerInput, answerInputError } = this.state;
 
     return(
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
@@ -51,10 +94,14 @@ class AddCard extends Component {
             value={questionInput}
             style={styles.textInput}
             onChangeText={this.handleQuestionChange}
+            onBlur={this.validateQuestionInput}
             multiline={true}
             numberOfLines={4}
             placeholder='Insert the Question'
           />
+          {questionInputError !== '' &&
+            <Text style={styles.textInputError}>{questionInputError}</Text>
+          }
         </View>
         <View style={styles.textInputContainer}>
           <Text style={styles.textInputLabel}>Answer</Text>
@@ -62,10 +109,14 @@ class AddCard extends Component {
             value={answerInput}
             style={styles.textInput}
             onChangeText={this.handleAnswerChange}
+            onBlur={this.validateAnswerInput}
             multiline={true}
             numberOfLines={4}
             placeholder='Insert the Answer'
           />
+          {answerInputError !== '' &&
+            <Text style={styles.textInputError}>{answerInputError}</Text>
+          }
         </View>
         <TextButton onPress={this.handleSubmitCard}>
           {'Submit'.toUpperCase()}
@@ -95,6 +146,9 @@ const styles = StyleSheet.create({
   textInputLabel: {
     color: blue,
   },
+  textInputError: {
+    color: red,
+  },
   textInput: {
     borderBottomWidth: 1,
     borderColor: lightGray,
@@ -106,12 +160,17 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state, { navigation }) {
-  //const { deckId } = navigation.state.params;
-  const deckId = 'React';
+  const { deckId } = navigation.state.params;
 
   return {
     deckId,
     deck: state[deckId]
+  }
+}
+
+function mapDispatchToProps(dispatch, { navigation }) {
+  return {
+    goBack: () => navigation.goBack(),
   }
 }
 

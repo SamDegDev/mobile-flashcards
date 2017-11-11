@@ -33,11 +33,9 @@ class DeckView extends Component {
     const total = deck.questions.length;
 
     return(
-      <View style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <Text style={styles.title}>{deck.title}</Text>
-          <Text style={styles.subtitle}>{total} card{total == 1 ? '' : 's'}</Text>
-        </View>
+      <View style={styles.container}>
+        <Text style={styles.title}>{deck.title}</Text>
+        <Text style={styles.subtitle}>{total} card{total == 1 ? '' : 's'}</Text>
         <TextButton onPress={this.addCard}>
           {'Add Card'.toUpperCase()}
         </TextButton>
@@ -53,18 +51,11 @@ class DeckView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: white,
     paddingTop: 20,
     paddingRight: 10,
     paddingBottom: 20,
     paddingLeft: 10,
-    marginTop: 10,
-    marginRight: 10,
-    marginBottom: 10,
-    marginLeft: 10,
-    borderRadius: 2,
   },
   title: {
     fontSize: 35,
@@ -76,6 +67,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: gray,
     textAlign: 'center',
+    marginBottom: 30,
   }
 });
 

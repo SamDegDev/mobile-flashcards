@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
-import { black, gray, white, green, red } from '../utils/colors';
+import { black, gray, white, green, red, lightPurp } from '../utils/colors';
 import AddCard from './AddCard';
 
 class QuizView extends Component {
@@ -56,6 +56,14 @@ class QuizView extends Component {
     }))
   }
 
+  resetQuiz = () => {
+    this.setState(() => ({
+      currentCard: 1,
+      corrects: 0,
+      incorrects: 0,
+    }));
+  }
+
   render() {
     const { decks, deckId } = this.props;
     const { showAnswer, bounceValue,
@@ -70,6 +78,9 @@ class QuizView extends Component {
           <Text style={styles.title}>Quiz Results</Text>
           <Text style={styles.resultsText}>Total Cards: {total}</Text>
           <Text style={styles.resultsText}>Correct: {corrects*100/total}%</Text>
+          <TextButton backgroundColor={lightPurp} onPress={this.resetQuiz}>
+            {'Start Quiz again'.toUpperCase()}
+          </TextButton>
           <TextButton onPress={goBack}>
             {'Back to the Deck'.toUpperCase()}
           </TextButton>

@@ -2,11 +2,12 @@ import { AsyncStorage } from 'react-native';
 const STORAGE_KEY = '1973ad72b2f2d4cd3ff16d62ad2981f0';
 
 export function fetchDecks() {
+  //AsyncStorage.clear();
   return AsyncStorage.getItem(STORAGE_KEY)
     .then(formatDataResults);
 }
 
-export function addDeck({ deck, key }) {
+export function updateDeck(deck, key) {
   return AsyncStorage.mergeItem(STORAGE_KEY, JSON.stringify(
     {
       [key]: deck,
@@ -44,7 +45,7 @@ function setDummyData() {
 }
 
 function formatDataResults(results) {
-  return results === null
+  return results === null || Object.keys(JSON.parse(results)).length === 0
     ? setDummyData()
     : JSON.parse(results);
 }

@@ -5,6 +5,7 @@ import DecksList from '../components/DecksList';
 import DeckView from '../components/DeckView';
 import AddCard from '../components/AddCard';
 import AddDeck from '../components/AddDeck';
+import QuizView from '../components/QuizView';
 import { white, black } from './colors';
 
 const Tabs = TabNavigator({
@@ -53,6 +54,9 @@ export const MainNavigator = StackNavigator(
     },
     AddCard: {
       screen: AddCard,
+    },
+    QuizView: {
+      screen: QuizView,
     },
   },
   {

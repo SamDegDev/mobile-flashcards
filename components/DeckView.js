@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
-import { black, gray, white, green } from '../utils/colors';
+import { black, gray, white, lightPurp } from '../utils/colors';
 import AddCard from './AddCard';
+import QuizView from './QuizView';
 
 class DeckView extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -25,12 +26,25 @@ class DeckView extends Component {
 
   startQuiz = () => {
     // start the quiz on this deck
+    const { decks, deckId } = this.props;
+    const deck = decks[deckId];
+    const total = deck.questions.length;
+
+    // if there are questions
+    if (total > 0) {
+      const { deckId } = this.props.navigation.state.params;
+      this.props.navigation.navigate(
+        'QuizView',
+        { deckId }
+      )
+    }
   }
 
   render() {
     const { decks, deckId } = this.props;
     const deck = decks[deckId];
     const total = deck.questions.length;
+    const hasCards = total > 0;
 
     return(
       <View style={styles.container}>
@@ -39,9 +53,11 @@ class DeckView extends Component {
         <TextButton onPress={this.addCard}>
           {'Add Card'.toUpperCase()}
         </TextButton>
-        <TextButton backgroundColor={green} onPress={this.startQuiz}>
+        <TextButton backgroundColor={!hasCards ? gray : lightPurp} onPress={this.startQuiz}
+        disabled={!hasCards} >
           {'Start Quiz'.toUpperCase()}
         </TextButton>
+        {!hasCards && <Text style={styles.subtitle}>To start the Quiz, add a new Card!</Text>}
       </View>
     );
   }

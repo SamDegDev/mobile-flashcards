@@ -6,3 +6,5 @@ export const green = '#008000';
 export const red = '#ff0000';
 export const yellow = '#ffbf00';
 export const lightGray = '#DCDCDC';
+export const purple = '#292477';
+export const lightPurp = '#7c53c3';

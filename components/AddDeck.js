@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView } from 'react-native';
 import TextButton from './TextButton';
-import { NavigationActions } from 'react-navigation';
 import { white, blue, black, lightGray, red } from '../utils/colors';
 //
 import { updateDeck } from '../utils/FlashcardsAPI';

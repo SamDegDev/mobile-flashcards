@@ -1,9 +1,10 @@
 import React from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import DecksList from '../components/DecksList';
 import DeckView from '../components/DeckView';
 import AddCard from '../components/AddCard';
+import AddDeck from '../components/AddDeck';
 import { white, black } from './colors';
 
 const Tabs = TabNavigator({
@@ -14,6 +15,13 @@ const Tabs = TabNavigator({
       tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='cards' size={30} color={tintColor} />
     }
   },
+  AddDeck: {
+    screen: AddDeck,
+    navigationOptions: {
+      tabBarLabel: 'Add Deck',
+      tabBarIcon: ({ tintColor }) => <MaterialIcons name='library-add' size={30} color={tintColor} />
+    }
+  }
 },
 {
   navigationOptions: {

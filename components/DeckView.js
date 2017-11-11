@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { AppLoading } from 'expo';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 import { black, gray, white, green } from '../utils/colors';
@@ -29,7 +28,8 @@ class DeckView extends Component {
   }
 
   render() {
-    const { deck } = this.props;
+    const { decks, deckId } = this.props;
+    const deck = decks[deckId];
     const total = deck.questions.length;
 
     return(
@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
   }
 });
 
-function mapStateToProps(state, { navigation }) {
+function mapStateToProps(decks, { navigation }) {
   const { deckId } = navigation.state.params;
 
   return {
     deckId,
-    deck: state[deckId]
+    decks
   }
 }
 

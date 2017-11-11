@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { AppLoading } from 'expo';
 import DeckItem from './DeckItem';
 import { connect } from 'react-redux';
-import { fetchDecks, addDeck } from '../utils/FlashcardsAPI';
+import { fetchDecks } from '../utils/FlashcardsAPI';
 import { receiveDecks } from '../actions';
 import TextButton from './TextButton';
 import { white, black } from '../utils/colors';

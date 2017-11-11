@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 import { black, gray, white, green, red } from '../utils/colors';
@@ -16,12 +16,19 @@ class QuizView extends Component {
 
   state = {
     showAnswer: false,
+    bounceValue: new Animated.Value(1),
   }
 
   handleToggleAnswer = () => {
     this.setState(() => ({
       showAnswer: !this.state.showAnswer,
     }));
+
+    const { bounceValue } = this.state;
+    Animated.sequence([
+      Animated.timing(bounceValue, { duration: 200, toValue: 1.04 }),
+      Animated.spring(bounceValue, { toValue: 1, friction: 4 }),
+    ]).start();
   }
 
   handleCorrect = () => {
@@ -34,27 +41,29 @@ class QuizView extends Component {
 
   render() {
     const { decks, deckId } = this.props;
-    const { showAnswer } = this.state;
+    const { showAnswer, bounceValue } = this.state;
     const deck = decks[deckId];
     const total = deck.questions.length;
     let current = 1;
 
     return(
       <View style={styles.container}>
-        {!showAnswer && <View>
-          <Text style={styles.title}>{deck.questions[current-1].question}</Text>
-          <TextButton backgroundColor={white} color={red} style={{ marginBottom: 30 }}
-            onPress={this.handleToggleAnswer}>
-            {'Answer'.toUpperCase()}
-          </TextButton>
-        </View>}
-        {showAnswer && <View>
-          <Text style={styles.title}>{deck.questions[current-1].answer}</Text>
-          <TextButton backgroundColor={white} color={red} style={{ marginBottom: 30 }}
-            onPress={this.handleToggleAnswer}>
-            {'Question'.toUpperCase()}
-          </TextButton>
-        </View>}
+        <Animated.View style={{ transform: [{ scale: bounceValue }] }}>
+          {!showAnswer && <View>
+            <Text style={styles.title}>{deck.questions[current-1].question}</Text>
+            <TextButton backgroundColor={white} color={red} style={{ marginBottom: 30 }}
+              onPress={this.handleToggleAnswer}>
+              {'Answer'.toUpperCase()}
+            </TextButton>
+          </View>}
+          {showAnswer && <View>
+            <Text style={styles.title}>{deck.questions[current-1].answer}</Text>
+            <TextButton backgroundColor={white} color={red} style={{ marginBottom: 30 }}
+              onPress={this.handleToggleAnswer}>
+              {'Question'.toUpperCase()}
+            </TextButton>
+          </View>}
+        </Animated.View>
         <TextButton backgroundColor={green} onPress={this.handleCorrect}>
           {'Correct'.toUpperCase()}
         </TextButton>

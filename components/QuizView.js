@@ -17,6 +17,9 @@ class QuizView extends Component {
   state = {
     showAnswer: false,
     bounceValue: new Animated.Value(1),
+    currentCard: 1,
+    corrects: 0,
+    incorrects: 0,
   }
 
   handleToggleAnswer = () => {
@@ -32,32 +35,61 @@ class QuizView extends Component {
   }
 
   handleCorrect = () => {
+    const { decks, deckId } = this.props;
+    const deck = decks[deckId];
+    const total = deck.questions.length;
 
+    this.setState(() => ({
+      corrects: this.state.corrects+1,
+      currentCard: this.state.currentCard+1,
+    }))
   }
 
   handleIncorrect = () => {
+    const { decks, deckId } = this.props;
+    const deck = decks[deckId];
+    const total = deck.questions.length;
 
+    this.setState(() => ({
+      incorrects: this.state.incorrects+1,
+      currentCard: this.state.currentCard+1,
+    }))
   }
 
   render() {
     const { decks, deckId } = this.props;
-    const { showAnswer, bounceValue } = this.state;
+    const { showAnswer, bounceValue,
+      currentCard, corrects, incorrects } = this.state;
     const deck = decks[deckId];
     const total = deck.questions.length;
-    let current = 1;
+    const { goBack } = this.props;
+
+    if (currentCard > total) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>Quiz Results</Text>
+          <Text style={styles.resultsText}>Total Cards: {total}</Text>
+          <Text style={styles.resultsText}>Correct: {corrects*100/total}%</Text>
+          <TextButton onPress={goBack}>
+            {'Back to the Deck'.toUpperCase()}
+          </TextButton>
+        </View>
+      );
+    }
 
     return(
       <View style={styles.container}>
-        <Animated.View style={{ transform: [{ scale: bounceValue }] }}>
+        <Text>{currentCard}/{total}</Text>
+        <Animated.View style={{ transform: [{ scale: bounceValue }], flex: 1 }}>
           {!showAnswer && <View>
-            <Text style={styles.title}>{deck.questions[current-1].question}</Text>
+            <Text style={styles.title}>{deck.questions[currentCard-1].question}</Text>
             <TextButton backgroundColor={white} color={red} style={{ marginBottom: 30 }}
               onPress={this.handleToggleAnswer}>
               {'Answer'.toUpperCase()}
             </TextButton>
           </View>}
           {showAnswer && <View>
-            <Text style={styles.title}>{deck.questions[current-1].answer}</Text>
+            <Text style={styles.title}>{deck.questions[currentCard-1].answer}</Text>
             <TextButton backgroundColor={white} color={red} style={{ marginBottom: 30 }}
               onPress={this.handleToggleAnswer}>
               {'Question'.toUpperCase()}
@@ -86,17 +118,17 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   title: {
-    fontSize: 35,
+    fontSize: 28,
     color: black,
     marginBottom: 5,
     textAlign: 'center',
   },
-  subtitle: {
+  resultsText: {
     fontSize: 20,
-    color: gray,
+    color: black,
+    marginBottom: 5,
     textAlign: 'center',
-    marginBottom: 30,
-  }
+  },
 });
 
 function mapStateToProps(decks, { navigation }) {
@@ -108,4 +140,10 @@ function mapStateToProps(decks, { navigation }) {
   }
 }
 
-export default connect(mapStateToProps)(QuizView);
+function mapDispatchToProps(dispatch, { navigation }) {
+  return {
+    goBack: () => navigation.goBack(),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizView);

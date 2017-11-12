@@ -6,6 +6,7 @@ import { white, blue, black, lightGray, red } from '../utils/colors';
 import { updateDeck } from '../utils/FlashcardsAPI';
 import { addDeck } from '../actions';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 class AddDeck extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -41,8 +42,16 @@ class AddDeck extends Component {
         [newDeck.title]: newDeck
       }));
 
-      // returns to deck view
-      this.props.goBack();
+      // show the new Deck resetting the previous deck to Home
+      this.props.navigation.dispatch(
+        NavigationActions.reset({
+          index: 1,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Home'}),
+            NavigationActions.navigate({ routeName: 'DeckView', params: { deckId: newDeck.title }})
+          ]
+        })
+      );
 
       // reset the fields
       this.setState(() => ({
@@ -147,8 +156,7 @@ function mapStateToProps(state, { navigation }) {
 
 function mapDispatchToProps(dispatch, { navigation }) {
   return {
-    dispatch,
-    goBack: () => navigation.goBack(),
+    dispatch
   }
 }
 

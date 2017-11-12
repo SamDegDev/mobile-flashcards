@@ -66,6 +66,7 @@ class DecksList extends Component {
           data={Object.values(decks)}
           renderItem={this.renderItem}
           keyExtractor={item => item.title}
+          style={{ marginBottom:10 }}
         />
       </View>
     );

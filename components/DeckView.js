@@ -11,7 +11,7 @@ class DeckView extends Component {
     const { deckId } = navigation.state.params;
 
     return {
-      title: deckId
+      title: deckId,
     }
   }
 

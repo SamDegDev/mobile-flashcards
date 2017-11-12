@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from './TextButton';
 import { black, gray, white, green, red, lightPurp } from '../utils/colors';
+import { setLocalNotification, clearLocalNotifications } from '../utils/notifications';
 import AddCard from './AddCard';
 
 class QuizView extends Component {
@@ -73,6 +74,10 @@ class QuizView extends Component {
     const { goBack } = this.props;
 
     if (currentCard > total) {
+      // reset the notifications for tomorrow
+      clearLocalNotifications()
+        .then(setLocalNotification);
+
       return (
         <View style={styles.container}>
           <Text style={styles.title}>Quiz Results</Text>
